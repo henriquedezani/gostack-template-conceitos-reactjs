@@ -15,20 +15,26 @@ function App() {
   }, []);
 
   async function handleAddRepository() {
+
     const repository = {
-      title: 'Teste 1'
+      title: 'Teste 1',
+      url: 'http://...',
+      techs: ['NodeJS', 'ReactJS']
     };
 
-    api.post('/repositories', repository).then((response) => { 
-      setRepositories([...repositories, response.data]);
-    })
+    const response = await api.post('/repositories', repository);    
+    setRepositories([...repositories, response.data]);
   }
 
   async function handleRemoveRepository(id) {
-    api.delete(`/repositories/${id}`).then((response) => { 
-      const _repositories = repositories.filter(r => r.id !== id);
-      setRepositories(_repositories);
-    });
+    await api.delete(`/repositories/${id}`);
+
+    setRepositories(repositories.filter(repository => repository.id !== id));
+
+    // api.delete(`/repositories/${id}`).then((response) => { 
+    //   const _repositories = repositories.filter(r => r.id !== id);
+    //   setRepositories(_repositories);
+    // });
   }
 
   return (
